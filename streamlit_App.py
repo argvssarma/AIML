@@ -9,8 +9,6 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
 
-allow_dangerous_deserialization = True
-
 st.set_page_config(page_title="Document Genie", layout="wide")
 
 st.markdown("""
@@ -61,6 +59,7 @@ def get_conversational_chain():
 
     Answer:
     """
+    allow_dangerous_deserialization = True
     model = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.3, google_api_key=api_key)
     prompt = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
     chain = load_qa_chain(model, chain_type="stuff", prompt=prompt)
