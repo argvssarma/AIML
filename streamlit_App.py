@@ -46,6 +46,7 @@ def get_text_chunks(text):
     return chunks
 
 def get_vector_store(text_chunks, api_key):
+    allow_dangerous_deserialization=True
     embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=api_key)
     vector_store = FAISS.from_texts(text_chunks, embedding=embeddings)
     vector_store.save_local("faiss_index")
@@ -66,6 +67,7 @@ def get_conversational_chain():
     return chain
 
 def user_input(user_question, api_key):
+    allow_dangerous_deserialization=True
     embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=api_key)
     new_db = FAISS.load_local("faiss_index", embeddings)
     docs = new_db.similarity_search(user_question)
@@ -77,7 +79,8 @@ def main():
     st.header("AI clone chatbot💁")
 
     user_question = st.text_input("Ask a Question from the PDF Files", key="user_question")
-
+    allow_dangerous_deserialization=True
+    
     if user_question and api_key:  # Ensure API key and user question are provided
         user_input(user_question, api_key)
 
